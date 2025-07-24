@@ -1,0 +1,6 @@
+2. Library Management System:
+• Entities: Books (title, author, ISBN, genre), Members (name, ID, contact
+info), Loans (member ID, book ISBN, loan date, due date)
+• Relationships: Members borrow Books (one-to-many).
+• Queries: Find overdue books, find books by genre, list members with most
+borrowed books.

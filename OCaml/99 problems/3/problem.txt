@@ -1,0 +1,6 @@
+Find the N'th element of a list.
+
+# at 2 ["a"; "b"; "c"; "d"; "e"];;
+- : string option = Some "c"
+# at 2 ["a"];;
+- : string option = None

@@ -1,0 +1,8 @@
+Find the last two (last and penultimate) elements of a list.
+
+# last_two ["a"; "b"; "c"; "d"];;
+- : (string * string) option = Some ("c", "d")
+# last_two ["a"];;
+- : (string * string) option = None
+
+
