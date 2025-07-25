@@ -2,7 +2,7 @@
 import psycopg2
 
 conn = psycopg2.connect(
-    dbname="postgres",
+    dbname="LibraryDb",
     user="postgres",
     password="4532",
     host="localhost",

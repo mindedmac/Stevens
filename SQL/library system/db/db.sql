@@ -13,10 +13,10 @@ CREATE TABLE Genres (
 
 CREATE TABLE Books (
     BookID INT PRIMARY KEY,
-    Title VARCHAR(150),
+    Title VARCHAR(200),
     ISBN VARCHAR(20) UNIQUE,
-    AuthorID INT,
-    GenreID INT,
+    Author_ID INT,
+    Genre_ID INT,
     YearPublished INT,
     CopiesAvailable INT,
     FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID),
