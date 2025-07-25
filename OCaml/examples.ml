@@ -216,3 +216,70 @@ let cost (ice: ice_cream) : float =
   | Cone _ -> 1.0
   | Cup (_, _) -> 2.0
   | Bucket flavors -> 1.0 +. (float (List.length flavors)) *. 0.5
+
+let interesting ic = 
+  match ic with 
+  | Cone _ -> false
+  | Cup (fst, snd) -> fst != snd
+  | Bucket flavors -> List.length flavors > 2
+
+let temp = [("NYC", 50.0); ("LA", 60.0); ("Chicago", 48.0); ("Anchorage", -2.0)]
+
+let rec lookup (city: string) (temps: (string * float) list) : float option =
+  match temps with
+  | [] -> raise Not_found
+  | (c, t) :: tail -> if c = city then Some t else lookup city tail
+
+
+
+
+
+type 'a bt = Empty | Node of 'a * 'a bt * 'a bt
+
+let t1 : int bt = 
+  Node(77, Node(33, Empty, Empty), Node(55, Node(44, Empty, Empty), Empty))
+
+let is_empty (tree: 'a bt) : bool =
+  match tree with
+  | Empty -> true
+  | Node(_,left,right) -> false
+
+let is_leaf (tree: 'a bt) : bool =
+  match tree with
+  | Node(_, Empty, Empty) -> true
+  | _ -> false
+
+let rec size (tree: 'a bt) : int =
+  match tree with
+  | Empty -> 0
+  | Node(_, left, right) -> 1 + size left + size right
+
+let rec sumt (tree: int bt) : int =
+  match tree with
+  | Empty -> 0
+  | Node(value, left, right) -> value + sumt left + sumt right
+
+let rec height (tree: 'a bt) : int =
+  match tree with
+  | Empty -> 0
+  | Node(_, left, right) -> 1 + max (height left) (height right)
+
+let rec memt (value: 'a) (tree: 'a bt) : bool =
+  match tree with
+  | Empty -> false
+  | Node(v, left, right) ->
+      if v = value then true
+      else memt value left || memt value right
+
+
+let rec listbt (tree: 'a bt) : 'a list =
+  match tree with
+  | Empty -> []
+  | Node(value, left, right) ->
+      value :: (listbt left @ listbt right)
+
+let rec listbt' (tree: 'a bt) : 'a list =
+  match tree with
+  | Empty -> []
+  | Node(value, left, right) ->
+      listbt' left @ (value :: listbt' right)
