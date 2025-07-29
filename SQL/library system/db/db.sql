@@ -1,3 +1,4 @@
+-- Books Table
 CREATE TABLE Books (
     ISBN VARCHAR(20) PRIMARY KEY,
     BookName VARCHAR(200) NOT NULL,
@@ -6,7 +7,7 @@ CREATE TABLE Books (
     CopiesAvailable INT
 );
 
--- Customers Table
+-- Customer Table
 CREATE TABLE Customer (
     CustomerName VARCHAR(30) PRIMARY KEY,
     CustomerCity VARCHAR(30),
@@ -19,7 +20,7 @@ CREATE TABLE Library (
     Library_City VARCHAR(20)
 );
 
--- Loans Table
+-- Loan Table
 CREATE TABLE Loan (
     LoanID INT PRIMARY KEY,
     ISBN_Code VARCHAR(20),
@@ -27,8 +28,20 @@ CREATE TABLE Loan (
     TimeLeft INT,
     ExpDate VARCHAR(20),
     Overdue BOOLEAN,
+    Library_Name VARCHAR(30),
     FOREIGN KEY (ISBN_Code) REFERENCES Books(ISBN),
-    FOREIGN KEY (CustomerName) REFERENCES Customer(CustomerName)
+    FOREIGN KEY (CustomerName) REFERENCES Customer(CustomerName),
+    FOREIGN KEY (Library_Name) REFERENCES Library(Library_Name)
+);
+
+-- Library_Books Table
+CREATE TABLE Library_Books (
+    Library_Name VARCHAR(30),
+    ISBN VARCHAR(20),
+    Copies INT,
+    PRIMARY KEY (Library_Name, ISBN),
+    FOREIGN KEY (Library_Name) REFERENCES Library(Library_Name),
+    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
 );
 
 INSERT INTO Library (Library_Name, Library_City) VALUES
