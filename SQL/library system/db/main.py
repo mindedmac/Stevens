@@ -3,21 +3,21 @@ import psycopg2
 # DB connection settings
 conn = psycopg2.connect(
     dbname="librarydb",
-    user="your_username",
-    password="your_password",
+    user="postgres",
+    password="4532",
     host="localhost",
     port="5432"
 )
 cur = conn.cursor()
 
 # Read and execute SQL file
-with open("schema.sql", "r", encoding="utf-8") as file:
+with open("db.sql", "r", encoding="utf-8") as file:
     sql = file.read()
 
-# Split and execute each statement
+# Clean execution per statement
 for statement in sql.strip().split(';'):
     if statement.strip():
-        cur.execute(statement + ';')
+        cur.execute(statement)
 
 # Finalize
 conn.commit()
