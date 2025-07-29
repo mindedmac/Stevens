@@ -283,3 +283,117 @@ let rec listbt' (tree: 'a bt) : 'a list =
   | Empty -> []
   | Node(value, left, right) ->
       listbt' left @ (value :: listbt' right)
+
+let rec mirror (tree: 'a bt) : 'a bt =
+  match tree with
+  | Empty -> Empty
+  | Node(value, left, right) ->
+      Node(value, mirror right, mirror left)
+
+let rec mapt = 
+  fun (f: 'a -> 'b) (tree: 'a bt) : 'b bt ->
+  match tree with
+  | Empty -> Empty
+  | Node(value, left, right) ->
+      Node(f value, mapt f left, mapt f right)
+
+let rec mint tree =
+  match tree with
+  | Empty -> failwith "Empty tree"
+  | Node(value, Empty, Empty) -> value
+  | Node(value, left, Empty) -> (min value (mint left))
+  | Node(value, Empty, right) -> (min value (mint right))
+  | Node(value, left, right) -> min value (min (mint left) (mint right))
+      
+  let rec maxt tree =
+    match tree with
+    | Empty -> failwith "Empty tree"
+    | Node(value, Empty, Empty) -> value
+    | Node(value, left, Empty) -> (max value (maxt left))
+    | Node(value, Empty, right) -> (max value (maxt right))
+    | Node(value, left, right) -> max value (max (maxt left) (maxt right))
+        
+
+let rec isbst (tree: int bt) : bool =
+  match tree with
+  | Empty | Node(_, Empty, Empty) -> true
+  | Node(value, left, Empty) -> maxt left < value && isbst left
+  | Node(value, Empty, right) -> mint right > value && isbst right
+  | Node(value, left, right) -> maxt left < value && mint right > value && isbst left && isbst right
+
+let rec insert (e: int) (tree: int bt) : int bt =
+  match tree with
+  | Empty -> Node(e, Empty, Empty)
+  | Node(value, left, right) ->
+      if e < value then Node(value, insert e left, right)
+      else if e > value then Node(value, left, insert e right)
+      else tree  
+
+let rec mem_bst (e: int) (tree: int bt) : bool =
+  match tree with
+  | Empty -> false
+  | Node(value, left, right) ->
+      if e = value then true
+      else if e < value then mem_bst e left
+      else mem_bst e right
+(*
+      assume t is not empty 
+max_bst
+min_bst
+rem     fail if e in trtee*)
+
+let rec remove (e: int) (tree: int bt) : int bt =
+  match tree with
+  | Empty -> failwith "Element not found"
+  | Node(value, left, Empty) when e = value-> left
+  | Node(value, Empty, right) when e = value-> right
+  | Node(value, left, right) when e = value -> Node(max_bst left, remove , right)
+
+  | Node(value, removed_left, right) when e = value ->
+      if e < value then Node(value, remove left e, rioht)
+      else Node(value, left, remove right e)
+
+let rec max_bst (tree: int bt) : int =
+  match tree with
+  | Empty -> failwith "Empty tree"
+  | Node(value, _, Empty) -> value
+  | Node(_, _, right) -> max_bst right
+
+let rec min_bst (tree: int bt) : int =
+  match tree with
+  | Empty -> failwith "Empty tree"
+  | Node(value, Empty, _) -> value
+  | Node(_, left, _) -> min_bst left  
+
+
+
+
+let rec is_balanced (tree: 'a bt) : bool = 
+  match tree with
+  | Empty -> true
+  | Node(_, lt, rt) -> abs ((height lt) - (height rt)) <= 1 && is_balanced lt && is_balanced rt
+
+  
+
+let x = ref 2;;
+!x;;
+x := 23;;
+
+
+let repeat' e i = 
+  let a = ref []
+  in 
+  begin
+  for j=1 to i do
+    
+    
+    
+    
+    
+    
+    
+    a := e :: !a
+    done;
+    !a
+  end
+

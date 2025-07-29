@@ -16,3 +16,7 @@ let rec is_palindrome' l acc =
   match l with
   | [] -> acc = []
   | head :: tail -> is_palindrome' tail (head :: acc)
+
+
+(*OCaml best solution*)
+let is_palindrome'' list = list = List.rev list
