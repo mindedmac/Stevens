@@ -22,7 +22,12 @@ CREATE TABLE Books (
     FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID),
     FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
 );
-
+CREATE TABLE LIBRARY (
+    Library_Name VARCHAR(30) PRIMARY KEY,
+    Library_city VARCHAR(20)
+    
+);
+Insert Into LIBRARY (Library_Name, Library_City)Values('New York Public Library', 'New York City')
 -- Insert Authors
 INSERT INTO Authors (AuthorID, Name, Country) VALUES (1, 'Joshua Tran', 'Lebanon');
 INSERT INTO Authors (AuthorID, Name, Country) VALUES (2, 'Chad Peters', 'Antarctica (the territory South of 60 deg S)');
