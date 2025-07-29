@@ -26,7 +26,7 @@ CREATE TABLE Loan (
     ISBN_Code VARCHAR(20),
     CustomerName VARCHAR(100),
     TimeLeft INT,
-    ExpDate VARCHAR(20),
+    ExpDate VARCHAR(22),
     Overdue BOOLEAN,
     Library_Name VARCHAR(100),
     FOREIGN KEY (ISBN_Code) REFERENCES Books(ISBN),
