@@ -397,3 +397,79 @@ let repeat' e i =
     !a
   end
 
+
+
+type 'a node = {mutable data: 'a; mutable next: 'a node option}  
+
+type 'a ll = {mutable head: 'a node option; mutable size: int}
+
+let l1: 'a ll = {head = None; size = 0}
+let l2:int ll = {head = Some {data = 1; next = None}; size = 1}
+let add_first (l: 'a ll) (e: 'a) : unit =
+  l.head <- Some {data = e; next = l.head};
+  l.size <- l.size + 1
+
+let list_of_ll (l: 'a ll) : 'a list =
+  let rec helper node acc =
+    match node with
+    | None -> List.rev acc
+    | Some n -> helper n.next (n.data :: acc)
+  in helper l.head []
+
+let mem (e: 'a) (l: 'a ll) : bool =
+  let rec helper node =
+    match node with
+    | None -> false
+    | Some n -> if n.data = e then true else helper n.next
+  in helper l.head
+
+let add_last (l: 'a ll) (e: 'a) : unit =
+  let rec helper node =
+    match node with
+    | None -> l.head <- Some {data = e; next = None}; l.size <- l.size + 1
+    | Some n -> if n.next = None then (n.next <- Some {data = e; next = None}; l.size <- l.size + 1) else helper n.next
+  in helper l.head
+
+let add_at (l: 'a ll) (e: 'a) (i: int) : unit =
+  if i < 0 || i > l.size then failwith "Index out of bounds";
+  let rec helper node index =
+    match node with
+    | None -> ()
+    | Some n ->
+        if index = i then (
+          n.next <- Some {data = e; next = n.next};
+          l.size <- l.size + 1)
+        else helper n.next (index + 1)
+  in
+  if i = 0 then add_first l e else helper l.head 0
+
+
+
+
+
+
+
+
+
+let remove_first (l: 'a ll) : unit =
+  match l.head with
+  | None -> failwith "List is empty"
+  | Some n ->
+      l.head <- n.next;
+      l.size <- l.size - 1    
+
+let remove_last (l: 'a ll) : unit =
+  if l.size = 0 then failwith "List is empty";
+  let rec helper node prev =
+    match node with
+    | None -> ()
+    | Some n ->
+        if n.next = None then
+          begin
+            match prev with
+            | None -> l.head <- None
+            | Some p -> p.next <- None;
+            l.size <- l.size - 1
+          end
+        else helper n.next (Some n)
+  in helper l.head None
