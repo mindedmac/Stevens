@@ -1,26 +1,30 @@
+type die = { top : int; down : int; left : int; right : int; front : int; back : int }
 
+let roll_down die =
+  { die with top = die.back; down = die.front; front = die.top; back = die.down }
 
-let mface = ref [|5; 6; 2; 1|]  (* [back; bottom; front; top] *)
-let nface = ref [|3; 6; 4; 1|] 
-let position = ref (1, 1)
-let top = ref 1
-let bottom = ref 6
+let roll_right die =
+  { die with top = die.left; down = die.right; left = die.down; right = die.top }
 
-let down () =
-  let om = !mface in
-  let on = !nface in
-  mface := [| om.(1); om.(2); om.(3); om.(0) |];
-  nface := [| om.(0); on.(3); om.(2); on.(1) |];
-  position := (fst !position + 1, snd !position);
-  top := !mface.(3);
-  bottom := !mface.(1)
+let init = {
+  top = 1;
+  down = 6;
+  left = 3;
+  right = 4;
+  front = 2;
+  back = 5;
+}
+let rec solve die down right =
+  let rest = match down, right with
+    | 1, 1 -> 0
+    | 1, r -> solve (roll_right die) 1 (r - 1)
+    | d, 1 -> solve (roll_down die) (d - 1) 1
+    | d, r -> max (solve (roll_down die) (d - 1) r) (solve (roll_right die) d (r - 1))
+  in rest + die.top
 
-let right () =
-  let om = !mface in
-  let on = !nface in
-  mface := [| om.(0); on.(2); om.(2); on.(0) |];
-  nface := [| on.(1); on.(2); on.(3); on.(0) |];
-  position := (fst !position, snd !position + 1);
-  top := !mface.(3);
-  bottom := !mface.(1)
+let get_max m n =
+  let m' = if m < 4 then 0 else m / 4 - 1 in
+  let n' = if n < 4 then 0 else n / 4 - 1 in
+  let m'base = m - m'*4 and n'base = n - n'*4 in
+  (m' + n') * 14 + solve init m'base n'base
 
