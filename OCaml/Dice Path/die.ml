@@ -1,34 +1,24 @@
+let mface = ref [|5; 6; 2; 1|]  (* [front; bottom; back; top] *)
+let nface = ref [|2; 4; 5; 3|]  (* [front; right; back; left] *)
+let position = ref (1, 1)
+let top = ref 1
+let bottom = ref 6
 
+let down () =
+  let om = !mface in
+  mface := [| om.(1); om.(2); om.(3); om.(0) |];
+  nface := [| !mface.(0); !nface.(1); !mface.(2); !nface.(3) |];
+  position := (fst !position + 1, snd !position);
+  top := !mface.(3);
+  bottom := !mface.(1)
 
+let right () =
+  let om = !mface in
+  let on = !nface in
+  mface := [| om.(0); on.(1); om.(2); on.(3) |];
+  nface := [| on.(0); om.(3); on.(2); om.(1) |];
+  position := (fst !position, snd !position + 1);
+  top := !mface.(3);
+  bottom := !mface.(1)
 
-(* Die state representation:
-   mface: [front; bottom; back; top]
-   nface: [front; right; back; left]
-   position: (row, col)
-   top: current top face value
-   bottom: current bottom face value *)
-
-  let mface = ref [1; 2; 6; 5]
-  let nface = ref [1; 4; 6; 3]
-  let position = ref (1, 1)
-  let top = ref (List.nth !mface 3)  (* Initialize with actual top value *)
-  let bottom = ref (List.nth !mface 1)  (* Initialize bottom *)
   
-  let down () =
-    match (!mface, !nface) with
-    | [m0; m1; m2; m3], [n0; n1; n2; n3] ->
-        mface := [m1; m2; m3; m0];
-        nface := [m1; n1; m3; n3];
-        position := (fst !position + 1, snd !position);
-        top := m0;    
-        bottom := m2 
-    | _ -> failwith "Invalid die state"
-  
-  let right () =
-    match (!mface, !nface) with
-    | [m0; m1; m2; m3], [n0; n1; n2; n3] ->
-        mface := [n1; m1; n3; m3];
-        nface := [n1; n2; n3; n0];
-        position := (fst !position, snd !position + 1);
-        bottom := m1  
-    | _ -> failwith "Invalid die state"
