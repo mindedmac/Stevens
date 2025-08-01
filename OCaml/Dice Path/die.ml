@@ -35,14 +35,28 @@ let rec solve die down right =
     | d, r -> max (solve (roll_down die) (d - 1) r) (solve (roll_right die) d (r - 1))
   in path + die.top (*add top to the maxpath taken*)
 
-let get_max m n =
-  let m' = if m < 4 
+let get_max x y =
+  let m = if x < 4 
     then 0 
-    else m / 4 - 1 in
-  let n' = if n < 4 
+    else x / 4 - 1 in
+  let n = if y < 4 
     then 0 
-    else n / 4 - 1 in
-  let m'' = m - m' * 4 in
-  let n'' = n - n' * 4 in
+    else y / 4 - 1 in
+  let m' = x - m * 4 in
+  let n' = y - n * 4 in
 
-  ((m' + n') * 14) + solve init m'' n''
+  ((m + n) * 14) + solve init m' n'
+
+let () = 
+    let n = int_of_string (read_line ()) in
+    let coord = ref [] in
+      for _ = 1 to n do
+        coord := !coord @ (List.map int_of_string ((String.split_on_char ' ') (read_line()))) 
+      done;
+      for i = 0 to n - 1 do
+        let m, n = List.nth !coord (i * 2), List.nth !coord (i * 2 + 1) in
+        let max_value = get_max m n in
+        print_endline (string_of_int max_value)
+      done
+      
+
